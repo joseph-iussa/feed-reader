@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:FeedReader"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <TextFormattingMode x:Key="TextFormattingMode">Display</TextFormattingMode>
     </Application.Resources>
 </Application>
