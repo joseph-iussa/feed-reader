@@ -20,14 +20,23 @@
         <Border BorderBrush="Black" BorderThickness="0,0,1,0">
             <StackPanel>
                 <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-                    <Label Content="Feeds" FontWeight="Bold" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*" />
+                            <ColumnDefinition Width="0.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Feeds" FontWeight="Bold" Grid.Column="0" />
+                        <Button x:Name="newFeedBtn" Content="New" Grid.Column="1" HorizontalAlignment="Right"
+                                Click="LaunchFeedEditWindow" />
+                    </Grid>
                 </Border>
                 <ListView x:Name="feedListView" DataContext="{StaticResource feedListSource}"
                           SelectedValuePath="ID" DisplayMemberPath="Title" SelectionMode="Single"
                           ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditWindow">
                     <ListView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Edit..." Click="LaunchFeedEditWindow" />
+                            <MenuItem x:Name="feedEditContextMenuItem"
+                                      Header="Edit..." Click="LaunchFeedEditWindow" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <ListView.ItemContainerStyle>

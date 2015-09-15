@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
@@ -29,8 +30,16 @@ namespace FeedReader
         private void saveFeed_Click(object sender, RoutedEventArgs e)
         {
             var db = ((MainWindow)Owner).db;
-            bool successful = false;
+            Feed feed = (Feed)DataContext;
 
+            // New Feed, not yet tracked.
+            bool feedIsNew = db.Entry(feed).State == EntityState.Detached;
+            if (feedIsNew)
+            {
+                db.Feeds.Add(feed);
+            }
+
+            bool successful = false;
             try
             {
                 db.SaveChanges();
@@ -46,6 +55,11 @@ namespace FeedReader
                         sb.AppendLine($"{error.PropertyName} -- {error.ErrorMessage}");
                     }
                     sb.AppendLine();
+                }
+
+                if (feedIsNew)
+                {
+                    db.Feeds.Remove(feed);
                 }
 
                 MessageBox.Show(sb.ToString());

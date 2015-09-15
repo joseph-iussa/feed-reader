@@ -43,8 +43,19 @@ namespace FeedReader
         {
             FeedEdit feedEditWindow = new FeedEdit();
             feedEditWindow.Owner = this;
-            feedEditWindow.DataContext = feedListView.SelectedItem;
+
+            if (sender == newFeedBtn)
+            {
+                Feed newFeed = new Feed();
+                feedEditWindow.DataContext = newFeed;
+            }
+            else if (sender == feedEditContextMenuItem || sender == feedListView)
+            {
+                feedEditWindow.DataContext = feedListView.SelectedItem;
+            }
+
             bool successful = (bool)feedEditWindow.ShowDialog();
+
             if (successful)
             {
                 feedListView.Items.Refresh();
