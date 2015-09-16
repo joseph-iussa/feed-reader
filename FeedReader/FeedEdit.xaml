@@ -6,11 +6,11 @@
         xmlns:Model="clr-namespace:FeedReader.Model" x:Class="FeedReader.FeedEdit"
         mc:Ignorable="d"
         Title="Add / Edit Feed" TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}"
-        Width="300" Height="300">
+        ShowInTaskbar="False" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="0.2*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid x:Name="grid1" Grid.Row="0">
             <Grid.RowDefinitions>
@@ -19,16 +19,18 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.3*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition MinWidth="200" />
+                <ColumnDefinition Width="0.15*" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Margin="3" Grid.Column="0" Content="Title:" />
-            <TextBox x:Name="titleTextBox"
-                     Text="{Binding Title}" Grid.Row="0" Margin="3" Grid.Column="1" />
-            <Label Grid.Row="1" Margin="3" Grid.Column="0" Content="Url:" />
+            <Label Grid.Row="0" Margin="3" Grid.Column="0" Content=" Feed Url:" />
             <TextBox x:Name="urlTextBox"
-                     Text="{Binding Url}" Grid.Row="1" Margin="3" Grid.Column="1" />
+                     Text="{Binding Url}" Grid.Row="0" Margin="3" Grid.Column="1" />
+            <Button Content="Process" Grid.Row="0" Grid.Column="2" Click="ProcessNewFeed" />
+            <Label Grid.Row="1" Margin="3" Grid.Column="0" Content="Title:" />
+            <TextBox x:Name="titleTextBox"
+                     Text="{Binding Title}" Grid.Row="1" Margin="3" Grid.Column="1" />
         </Grid>
         <Button x:Name="saveFeed" Content="Save" FontSize="16" FontWeight="Bold" Grid.Row="1"
-                Click="saveFeed_Click" />
+                Click="SaveFeed" />
     </Grid>
 </Window>

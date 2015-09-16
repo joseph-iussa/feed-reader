@@ -17,6 +17,7 @@ namespace FeedReader.Model
         public string Title { get; set; }
 
         [Required]
+        [DataType(DataType.Url)]
         public string Url { get; set; }
     }
 
