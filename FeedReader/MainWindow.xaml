@@ -6,11 +6,8 @@
         xmlns:Model="clr-namespace:FeedReader.Model" x:Class="FeedReader.MainWindow"
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
-        Title="Feed Reader" WindowState="Normal" Width="1600" Height="900" Loaded="Window_Loaded"
+        Title="Feed Reader" WindowState="Normal" Width="1600" Height="900"
         TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True">
-    <Window.Resources>
-        <CollectionViewSource x:Key="feedListSource" d:DesignSource="{d:DesignInstance {x:Type Model:Feed}, CreateList=True}" />
-    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*" />
@@ -30,8 +27,8 @@
                                 Click="LaunchFeedEditWindow" />
                     </Grid>
                 </Border>
-                <ListView x:Name="feedListView" DataContext="{StaticResource feedListSource}"
-                          SelectedValuePath="ID" DisplayMemberPath="Title" SelectionMode="Single"
+                <ListView x:Name="feedListView" DataContext="{StaticResource FeedViewSource}"
+                          DisplayMemberPath="Title" SelectionMode="Single"
                           ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditWindow">
                     <ListView.ContextMenu>
                         <ContextMenu>

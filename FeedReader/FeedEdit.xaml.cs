@@ -24,17 +24,35 @@ namespace FeedReader
     /// </summary>
     public partial class FeedEdit : Window
     {
+        private ListCollectionView feedView;
+        private Feed feed;
+
         public FeedEdit()
         {
             InitializeComponent();
         }
 
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            feedView = (ListCollectionView)(((CollectionViewSource)(FindResource("FeedViewSource"))).View);
+        }
+
+        internal void BeginAdd()
+        {
+            feed = (Feed)feedView.AddNew();
+        }
+
+        internal void BeginEdit()
+        {
+            feedView.EditItem(feedView.CurrentItem);
+            feed = (Feed)feedView.CurrentEditItem;
+        }
+
         private void ProcessNewFeed(object sender, RoutedEventArgs e)
         {
-            Feed feed = (Feed)DataContext;
-
             // Validate Url.
-            if (!Uri.IsWellFormedUriString(feed.Url, UriKind.Absolute))
+            if (string.IsNullOrWhiteSpace(feed.Url)
+                || !Uri.IsWellFormedUriString(feed.Url, UriKind.Absolute))
             {
                 MessageBox.Show("Invalid Feed Url");
                 return;
@@ -42,22 +60,11 @@ namespace FeedReader
 
             XElement feedXml = XElement.Load(feed.Url);
             feed.Title = feedXml.Element("channel").Element("title").Value;
-
-            DataContext = null;
-            DataContext = feed;
         }
 
         private void SaveFeed(object sender, RoutedEventArgs e)
         {
-            var db = ((MainWindow)Owner).db;
-            Feed feed = (Feed)DataContext;
-
-            // New Feed, not yet tracked.
-            bool feedIsNew = db.Entry(feed).State == EntityState.Detached;
-            if (feedIsNew)
-            {
-                db.Feeds.Add(feed);
-            }
+            DB db = ((App)Application.Current).Db;
 
             bool successful = false;
             try
@@ -77,18 +84,33 @@ namespace FeedReader
                     sb.AppendLine();
                 }
 
-                if (feedIsNew)
-                {
-                    db.Feeds.Remove(feed);
-                }
-
                 MessageBox.Show(sb.ToString());
             }
 
             if (successful)
             {
+                if (feedView.IsAddingNew)
+                {
+                    feedView.CommitNew();
+                }
+                else if (feedView.IsEditingItem)
+                {
+                    feedView.CommitEdit();
+                }
+
                 DialogResult = true;
-                Close();
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (feedView.IsAddingNew)
+            {
+                feedView.CancelNew();
+            }
+            else if (feedView.IsEditingItem)
+            {
+                feedView.CancelEdit();
             }
         }
     }

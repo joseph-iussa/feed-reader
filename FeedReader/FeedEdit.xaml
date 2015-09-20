@@ -6,13 +6,10 @@
         xmlns:Model="clr-namespace:FeedReader.Model" x:Class="FeedReader.FeedEdit"
         mc:Ignorable="d"
         Title="Add / Edit Feed" TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}"
-        ShowInTaskbar="False" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid x:Name="grid1" Grid.Row="0">
+        ShowInTaskbar="False" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
+        Closing="Window_Closing" Initialized="Window_Initialized">
+    <StackPanel DataContext="{Binding Source={StaticResource FeedViewSource}}">
+        <Grid  Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -30,7 +27,15 @@
             <TextBox x:Name="titleTextBox"
                      Text="{Binding Title}" Grid.Row="1" Margin="3" Grid.Column="1" />
         </Grid>
-        <Button x:Name="saveFeed" Content="Save" FontSize="16" FontWeight="Bold" Grid.Row="1"
-                Click="SaveFeed" />
-    </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="saveFeed" Content="Save" FontSize="16" FontWeight="Bold" Grid.Column="0"
+                IsDefault="True" Click="SaveFeed" />
+            <Button Content="Cancel" FontSize="16" FontWeight="Bold" Grid.Column="1"
+                IsCancel="True" />
+        </Grid>
+    </StackPanel>
 </Window>
