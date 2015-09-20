@@ -7,7 +7,7 @@
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="Feed Reader" WindowState="Normal" Width="1600" Height="900"
-        TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True">
+        TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*" />
@@ -24,16 +24,16 @@
                         </Grid.ColumnDefinitions>
                         <Label Content="Feeds" FontWeight="Bold" Grid.Column="0" />
                         <Button x:Name="newFeedBtn" Content="New" Grid.Column="1" HorizontalAlignment="Right"
-                                Click="LaunchFeedEditWindow" />
+                                Click="LaunchFeedEditDialog" />
                     </Grid>
                 </Border>
                 <ListView x:Name="feedListView" DataContext="{StaticResource FeedViewSource}"
                           DisplayMemberPath="Title" SelectionMode="Single"
-                          ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditWindow">
+                          ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditDialog">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="feedEditContextMenuItem"
-                                      Header="Edit..." Click="LaunchFeedEditWindow" />
+                                      Header="Edit..." Click="LaunchFeedEditDialog" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <ListView.ItemContainerStyle>

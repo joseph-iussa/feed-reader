@@ -3,11 +3,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FeedReader"
-        xmlns:Model="clr-namespace:FeedReader.Model" x:Class="FeedReader.FeedEdit"
+        xmlns:Model="clr-namespace:FeedReader.Model" x:Class="FeedReader.FeedEditDialog"
         mc:Ignorable="d"
         Title="Add / Edit Feed" TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}"
         ShowInTaskbar="False" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
-        Closing="Window_Closing" Initialized="Window_Initialized">
+        Closing="Window_Closing">
     <StackPanel DataContext="{Binding Source={StaticResource FeedViewSource}}">
         <Grid  Margin="5">
             <Grid.RowDefinitions>

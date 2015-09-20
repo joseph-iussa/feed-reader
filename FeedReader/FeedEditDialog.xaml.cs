@@ -22,18 +22,14 @@ namespace FeedReader
     /// <summary>
     /// Interaction logic for FeedEdit.xaml
     /// </summary>
-    public partial class FeedEdit : Window
+    public partial class FeedEditDialog : Window
     {
         private ListCollectionView feedView;
         private Feed feed;
 
-        public FeedEdit()
+        public FeedEditDialog()
         {
             InitializeComponent();
-        }
-
-        private void Window_Initialized(object sender, EventArgs e)
-        {
             feedView = (ListCollectionView)(((CollectionViewSource)(FindResource("FeedViewSource"))).View);
         }
 
@@ -112,6 +108,9 @@ namespace FeedReader
             {
                 feedView.CancelEdit();
             }
+
+            e.Cancel = true;
+            Hide();
         }
     }
 }
