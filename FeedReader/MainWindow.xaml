@@ -50,7 +50,8 @@
 
         <DataGrid x:Name="feedItemList" Grid.Column="1" AutoGenerateColumns="False"
                   ItemsSource="{Binding FeedItems}" IsSynchronizedWithCurrentItem="True"
-                  HeadersVisibility="Column" SelectionMode="Single" CanUserResizeRows="False">
+                  HeadersVisibility="Column" SelectionMode="Single"
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Feed" Binding="{Binding Feed}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True" />
