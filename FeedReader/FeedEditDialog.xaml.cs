@@ -83,6 +83,7 @@ namespace FeedReader
                 {
                     newItem.PublishDate = itemPublishDate;
                 }
+                newItem.PopulateHtmlFields();
                 feed.FeedItems.Add(newItem);
             }
         }

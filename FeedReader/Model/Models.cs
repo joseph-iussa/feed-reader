@@ -111,6 +111,21 @@ namespace FeedReader.Model
 
         public DateTime? PublishDate { get; set; }
         public bool IsRead { get; set; } = false;
+
+        // Html properties for display.
+        [Column(TypeName = "ntext")]
+        [MaxLength]
+        public string HtmlHeader { get; set; }
+
+        [Column(TypeName = "ntext")]
+        [MaxLength]
+        public string HtmlMainContent { get; set; }
+
+        public void PopulateHtmlFields()
+        {
+            HtmlHeader = $"<h1><a href=\"{Url}\">{Title}</a></h1>";
+            HtmlMainContent = $"<div>{Summary}</div> <hr> <div>{Content}</div>";
+        }
     }
 
     public class DB : DbContext

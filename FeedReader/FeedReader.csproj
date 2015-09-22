@@ -47,6 +47,14 @@
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net45\EntityFramework.SqlServerCompact.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlRenderer.WPF, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.WPF.1.5.0.6\lib\net45\HtmlRenderer.WPF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -54,7 +62,9 @@
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -93,6 +103,10 @@
     <Compile Include="Migrations\201509211818583_MakeFeedItemPublishDateNullable.cs" />
     <Compile Include="Migrations\201509211818583_MakeFeedItemPublishDateNullable.Designer.cs">
       <DependentUpon>201509211818583_MakeFeedItemPublishDateNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509221609440_AddHtmlDisplayFields.cs" />
+    <Compile Include="Migrations\201509221609440_AddHtmlDisplayFields.Designer.cs">
+      <DependentUpon>201509221609440_AddHtmlDisplayFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
     <Page Include="FeedEditDialog.xaml">
@@ -153,11 +167,16 @@
     <EmbeddedResource Include="Migrations\201509211818583_MakeFeedItemPublishDateNullable.resx">
       <DependentUpon>201509211818583_MakeFeedItemPublishDateNullable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509221609440_AddHtmlDisplayFields.resx">
+      <DependentUpon>201509221609440_AddHtmlDisplayFields.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\FeedReader.Model.Feed.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
