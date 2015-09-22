@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,8 +16,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Xml.Linq;
+using System.Xml;
 using FeedReader.Model;
+using static FeedReader.Utils;
 
 namespace FeedReader
 {
@@ -46,16 +49,44 @@ namespace FeedReader
 
         private void ProcessNewFeed(object sender, RoutedEventArgs e)
         {
-            // Validate Url.
-            if (string.IsNullOrWhiteSpace(feed.Url)
-                || !Uri.IsWellFormedUriString(feed.Url, UriKind.Absolute))
+            SyndicationFeed feedData;
+
+            try
             {
-                MessageBox.Show("Invalid Feed Url");
+                feedData = LoadFeedDataFromUrl(feed.Url);
+            }
+            catch (FeedDataLoadException ex)
+            {
+                MessageBox.Show(ex.Message);
                 return;
             }
 
-            XElement feedXml = XElement.Load(feed.Url);
-            feed.Title = feedXml.Element("channel").Element("title").Value;
+            feed.Title = string.IsNullOrEmpty(feedData.Title?.Text) ? feed.Url : feedData.Title.Text;
+            DateTime feedLastUpdated = feedData.LastUpdatedTime.UtcDateTime;
+            // SqlServerCe can't handle DateTime.MinValue, which is value given if LastUpdatedTime
+            // is absent from feed.
+            if (feedLastUpdated > DateTime.MinValue)
+            {
+                feed.LastUpdated = feedLastUpdated;
+            }
+
+            foreach (var feedDataItem in feedData.Items)
+            {
+                FeedItem newItem = new FeedItem();
+                newItem.Title = feedDataItem.Title?.Text;
+                newItem.Url = feedDataItem.Links?.First()?.GetAbsoluteUri().ToString();
+                //newItem.Summary = feedDataItem.Summary?.Text;
+                newItem.Summary = "summary";
+                //newItem.Content = feedDataItem.Content?.ToString();
+                newItem.Content = "content";
+                DateTime itemPublishDate = feedDataItem.PublishDate.UtcDateTime;
+                // SqlServerCe can't handle DateTime.MinValue, see above.
+                if (itemPublishDate > DateTime.MinValue)
+                {
+                    newItem.PublishDate = itemPublishDate;
+                }
+                feed.FeedItems.Add(newItem);
+            }
         }
 
         private void SaveFeed(object sender, RoutedEventArgs e)

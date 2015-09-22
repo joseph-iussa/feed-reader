@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,7 @@ namespace FeedReader.Model
         private Feed cache;
 
         public int ID { get; set; }
+        public virtual ObservableCollection<FeedItem> FeedItems { get; private set; }
 
         [Required]
         [StringLength(100)]
@@ -48,7 +51,14 @@ namespace FeedReader.Model
             }
         }
 
+        public DateTime? LastUpdated { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Feed()
+        {
+            FeedItems = new ObservableCollection<FeedItem>();
+        }
 
         public void BeginEdit()
         {
@@ -75,10 +85,34 @@ namespace FeedReader.Model
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
         }
+
+        public override string ToString()
+        {
+            return Title;
+        }
+    }
+
+    public class FeedItem
+    {
+        public int ID { get; set; }
+        public virtual Feed Feed { get; set; }
+
+        public string Title { get; set; }
+        public string Url { get; set; }
+
+        [Column(TypeName = "ntext")]
+        public string Summary { get; set; }
+
+        [Column(TypeName = "ntext")]
+        public string Content { get; set; }
+
+        public DateTime? PublishDate { get; set; }
+        public bool IsRead { get; set; } = false;
     }
 
     public class DB : DbContext
     {
         public DbSet<Feed> Feeds { get; set; }
+        public DbSet<FeedItem> FeedItems { get; set; }
     }
 }

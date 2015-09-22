@@ -8,12 +8,13 @@
         mc:Ignorable="d"
         Title="Feed Reader" WindowState="Normal" Width="1600" Height="900"
         TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True" Loaded="Window_Loaded">
-    <Grid>
+    <Grid DataContext="{StaticResource FeedViewSource}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*" />
             <ColumnDefinition Width="0.4*" />
             <ColumnDefinition Width="0.4*" />
         </Grid.ColumnDefinitions>
+
         <Border BorderBrush="Black" BorderThickness="0,0,1,0">
             <StackPanel>
                 <Border BorderThickness="0,0,0,1" BorderBrush="Black">
@@ -27,7 +28,7 @@
                                 Click="LaunchFeedEditDialog" />
                     </Grid>
                 </Border>
-                <ListView x:Name="feedListView" DataContext="{StaticResource FeedViewSource}"
+                <ListView x:Name="feedListView"
                           DisplayMemberPath="Title" SelectionMode="Single"
                           ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditDialog">
                     <ListView.ContextMenu>
@@ -45,5 +46,14 @@
                 </ListView>
             </StackPanel>
         </Border>
+
+        <DataGrid x:Name="feedItems" Grid.Column="1" AutoGenerateColumns="False"
+                  ItemsSource="{Binding FeedItems}"
+                  HeadersVisibility="Column" SelectionMode="Single" CanUserResizeRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Feed" Binding="{Binding Feed}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
