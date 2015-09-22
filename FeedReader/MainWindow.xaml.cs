@@ -23,31 +23,32 @@ namespace FeedReader
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FeedEditDialog feedEditDialog;
-
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, EventArgs e)
-        {
-            feedEditDialog = new FeedEditDialog();
-            feedEditDialog.Owner = this;
-        }
-
         private void LaunchFeedEditDialog(object sender, RoutedEventArgs e)
         {
+            FeedEditDialog feedEditDialog = new FeedEditDialog();
+            feedEditDialog.Owner = this;
+
             if (sender == newFeedBtn)
             {
                 feedEditDialog.BeginAdd();
             }
-            else if (sender == feedEditContextMenuItem || sender == feedListView)
+            else if (sender == feedEditContextMenuItem || sender == feedList)
             {
                 feedEditDialog.BeginEdit();
             }
 
-            feedEditDialog.ShowDialog();
+            bool success = (bool)feedEditDialog.ShowDialog();
+
+            if (success)
+            {
+                feedList.Items.Refresh();
+                feedItemList.Items.Refresh();
+            }
         }
     }
 }

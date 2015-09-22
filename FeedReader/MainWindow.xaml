@@ -7,7 +7,7 @@
         xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="Feed Reader" WindowState="Normal" Width="1600" Height="900"
-        TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True" Loaded="Window_Loaded">
+        TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True">
     <Grid DataContext="{StaticResource FeedViewSource}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*" />
@@ -28,7 +28,7 @@
                                 Click="LaunchFeedEditDialog" />
                     </Grid>
                 </Border>
-                <ListView x:Name="feedListView"
+                <ListView x:Name="feedList"
                           DisplayMemberPath="Title" SelectionMode="Single"
                           ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditDialog">
                     <ListView.ContextMenu>
@@ -47,7 +47,7 @@
             </StackPanel>
         </Border>
 
-        <DataGrid x:Name="feedItems" Grid.Column="1" AutoGenerateColumns="False"
+        <DataGrid x:Name="feedItemList" Grid.Column="1" AutoGenerateColumns="False"
                   ItemsSource="{Binding FeedItems}"
                   HeadersVisibility="Column" SelectionMode="Single" CanUserResizeRows="False">
             <DataGrid.Columns>

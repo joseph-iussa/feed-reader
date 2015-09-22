@@ -138,8 +138,11 @@ namespace FeedReader
                 feedView.CancelEdit();
             }
 
-            e.Cancel = true;
-            Hide();
+            // If cancelling dialog then discard new yet unsaved FeedItems added to feed.
+            if (!(bool)DialogResult)
+            {
+                feed.FeedItems.Clear();
+            }
         }
     }
 }
