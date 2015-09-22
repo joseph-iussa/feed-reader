@@ -75,10 +75,8 @@ namespace FeedReader
                 FeedItem newItem = new FeedItem();
                 newItem.Title = feedDataItem.Title?.Text;
                 newItem.Url = feedDataItem.Links?.First()?.GetAbsoluteUri().ToString();
-                //newItem.Summary = feedDataItem.Summary?.Text;
-                newItem.Summary = "summary";
-                //newItem.Content = feedDataItem.Content?.ToString();
-                newItem.Content = "content";
+                newItem.Summary = feedDataItem.Summary?.Text;
+                newItem.Content = feedDataItem.Content?.ToString();
                 DateTime itemPublishDate = feedDataItem.PublishDate.UtcDateTime;
                 // SqlServerCe can't handle DateTime.MinValue, see above.
                 if (itemPublishDate > DateTime.MinValue)

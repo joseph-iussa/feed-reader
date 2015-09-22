@@ -101,9 +101,12 @@ namespace FeedReader.Model
         public string Url { get; set; }
 
         [Column(TypeName = "ntext")]
+        // SqlServerCe needs this to actually allow strings longer than 4000 chars into the db.
+        [MaxLength]
         public string Summary { get; set; }
 
         [Column(TypeName = "ntext")]
+        [MaxLength] // See above.
         public string Content { get; set; }
 
         public DateTime? PublishDate { get; set; }
