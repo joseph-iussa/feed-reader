@@ -101,6 +101,8 @@ namespace FeedReader.Model
     public class FeedItem
     {
         public int ID { get; set; }
+
+        [Required]
         public virtual Feed Feed { get; set; }
 
         public string Title { get; set; }

@@ -36,6 +36,7 @@
                         <ContextMenu>
                             <MenuItem x:Name="feedEditContextMenuItem"
                                       Header="Edit..." Click="LaunchFeedEditDialog" />
+                            <MenuItem Header="Delete..." Click="LaunchFeedDeleteDialog" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <ListView.ItemContainerStyle>

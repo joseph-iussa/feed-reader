@@ -108,6 +108,10 @@
     <Compile Include="Migrations\201509221609440_AddHtmlDisplayFields.Designer.cs">
       <DependentUpon>201509221609440_AddHtmlDisplayFields.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509261426096_CascadeFeedItemDelete.cs" />
+    <Compile Include="Migrations\201509261426096_CascadeFeedItemDelete.Designer.cs">
+      <DependentUpon>201509261426096_CascadeFeedItemDelete.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils.cs" />
     <Page Include="FeedEditDialog.xaml">
       <SubType>Designer</SubType>
@@ -169,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509221609440_AddHtmlDisplayFields.resx">
       <DependentUpon>201509221609440_AddHtmlDisplayFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509261426096_CascadeFeedItemDelete.resx">
+      <DependentUpon>201509261426096_CascadeFeedItemDelete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

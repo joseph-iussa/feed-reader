@@ -50,5 +50,23 @@ namespace FeedReader
                 feedItemList.Items.Refresh();
             }
         }
+
+        private void LaunchFeedDeleteDialog(object sender, RoutedEventArgs e)
+        {
+            Feed feed = (Feed)feedList.SelectedItem;
+
+            MessageBoxResult result = MessageBox.Show(
+                $"Really delete feed {feed.Title}?", "Delete Feed",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning,
+                MessageBoxResult.No
+            );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                DB db = ((App)Application.Current).Db;
+                db.Feeds.Remove(feed);
+                db.SaveChanges();
+            }
+        }
     }
 }
