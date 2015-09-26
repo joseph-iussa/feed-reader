@@ -62,13 +62,19 @@ namespace FeedReader.Model
 
         public void BeginEdit()
         {
-            cache = new Feed { Title = this.Title, Url = this.Url };
+            cache = new Feed
+            {
+                Title = this.Title,
+                Url = this.Url,
+                FeedItems = new ObservableCollection<FeedItem>(this.FeedItems)
+            };
         }
 
         public void CancelEdit()
         {
             Title = cache.Title;
             Url = cache.Url;
+            FeedItems = cache.FeedItems;
             cache = null;
             NotifyPropertyChanged("");
         }
