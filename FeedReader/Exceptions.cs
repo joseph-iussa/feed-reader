@@ -8,7 +8,7 @@ namespace FeedReader
 {
     public class FeedDataLoadException : Exception
     {
-        public FeedDataLoadException(string msg) : base(msg)
+        public FeedDataLoadException(string msg, Exception ex) : base(msg, ex)
         {
         }
     }

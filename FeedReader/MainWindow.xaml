@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:htmlrend="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         xmlns:local="clr-namespace:FeedReader"
-        xmlns:Model="clr-namespace:FeedReader.Model" x:Class="FeedReader.MainWindow"
-        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         mc:Ignorable="d"
+        x:Class="FeedReader.MainWindow"
         Title="Feed Reader" WindowState="Normal" Width="1600" Height="900"
         TextOptions.TextFormattingMode="{DynamicResource TextFormattingMode}" SnapsToDevicePixels="True">
-    <Grid DataContext="{StaticResource FeedViewSource}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*" />
             <ColumnDefinition Width="0.4*" />
@@ -26,19 +26,37 @@
                         </Grid.ColumnDefinitions>
                         <Label Content="Feeds" FontWeight="Bold" Grid.Column="0" />
                         <Button x:Name="newFeedBtn" Content="New" Grid.Column="1" HorizontalAlignment="Right"
-                                Click="LaunchFeedEditDialog" />
+                                Command="{Binding NewFeedCommand}" />
                     </Grid>
                 </Border>
+                <ListView>
+                    <ListView.Items>
+                        <ListViewItem Content="All Feeds" IsSelected="True">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding ClearFeedItemsFilterCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ListViewItem>
+                    </ListView.Items>
+                </ListView>
                 <ListView x:Name="feedList"
                           DisplayMemberPath="Title" SelectionMode="Single"
-                          ItemsSource="{Binding}" BorderThickness="0" MouseDoubleClick="LaunchFeedEditDialog">
+                          ItemsSource="{Binding Feeds}" SelectedItem="{Binding Path=SelectedFeed}"
+                          BorderThickness="0">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="feedEditContextMenuItem"
-                                      Header="Edit..." Click="LaunchFeedEditDialog" />
-                            <MenuItem Header="Delete..." Click="LaunchFeedDeleteDialog" />
+                                      Header="Edit..." Command="{Binding ModifyFeedCommand}" />
+                            <MenuItem Header="Delete..."
+                                      Command="{Binding Path=SelectedFeed.DeleteFeedCommand}" />
                         </ContextMenu>
                     </ListView.ContextMenu>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding ModifyFeedCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Padding" Value="3" />
@@ -50,16 +68,18 @@
         </Border>
 
         <DataGrid x:Name="feedItemList" Grid.Column="1" AutoGenerateColumns="False"
-                  ItemsSource="{Binding FeedItems}" IsSynchronizedWithCurrentItem="True"
+                  ItemsSource="{Binding FeedItemsView}" SelectedItem="{Binding SelectedFeedItem}"
                   HeadersVisibility="Column" SelectionMode="Single"
-                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False">
+                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Feed" Binding="{Binding Feed}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Title" Binding="{Binding Title}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Feed" Binding="{Binding FeedTitle}" Width="0.2*" />
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*" />
+                <DataGridTextColumn Header="Published" Binding="{Binding PublishDate}"
+                                    SortDirection="Descending" Width="SizeToCells" />
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Column="2" DataContext="{Binding FeedItems}">
+        <Grid x:Name="feedItemDisplay" Grid.Column="2" DataContext="{Binding SelectedFeedItem}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.2*" />
                 <RowDefinition />

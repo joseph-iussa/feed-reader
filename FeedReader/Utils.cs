@@ -11,27 +11,28 @@ namespace FeedReader
 {
     public static class Utils
     {
+        // TODO: Fix feed uri validation.
         public static SyndicationFeed LoadFeedDataFromUrl(string url)
         {
             try
             {
                 return SyndicationFeed.Load(XmlReader.Create(url));
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException ex)
             {
-                throw new FeedDataLoadException("Feed url is empty");
+                throw new FeedDataLoadException("Feed url is empty", ex);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                throw new FeedDataLoadException("Could not access feed");
+                throw new FeedDataLoadException("Could not access feed", ex);
             }
             catch (Exception ex) when (ex is UriFormatException || ex is ArgumentException)
             {
-                throw new FeedDataLoadException("Feed url is malformed");
+                throw new FeedDataLoadException("Feed url is malformed", ex);
             }
-            catch (XmlException)
+            catch (XmlException ex)
             {
-                throw new FeedDataLoadException("Feed content is invalid");
+                throw new FeedDataLoadException("Feed content is invalid", ex);
             }
         }
     }

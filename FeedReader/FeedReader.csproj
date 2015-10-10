@@ -65,6 +65,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -83,6 +84,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Migrations\201509211614172_AddFeedItem.cs" />
     <Compile Include="Migrations\201509211614172_AddFeedItem.Designer.cs">
@@ -112,11 +114,20 @@
     <Compile Include="Migrations\201509261426096_CascadeFeedItemDelete.Designer.cs">
       <DependentUpon>201509261426096_CascadeFeedItemDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="Repository\Repository.cs" />
     <Compile Include="Utils.cs" />
-    <Page Include="FeedEditDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="ViewModel\FeedItemViewModel.cs" />
+    <Compile Include="ViewModel\FeedViewModel.cs" />
+    <Compile Include="ViewModel\IDialogCloser.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\FeedEditView.xaml.cs">
+      <DependentUpon>FeedEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ModalDialog.xaml.cs">
+      <DependentUpon>ModalDialog.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -125,13 +136,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FeedEditDialog.xaml.cs">
-      <DependentUpon>FeedEditDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\FeedEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ModalDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\201509091644310_InitialCreate.cs" />

@@ -11,11 +11,8 @@ using System.Threading.Tasks;
 
 namespace FeedReader.Model
 {
-    public class Feed : IEditableObject, INotifyPropertyChanged
+    public class Feed : IEditableObject
     {
-        private string title;
-        private string url;
-
         private Feed cache;
 
         public int ID { get; set; }
@@ -23,37 +20,13 @@ namespace FeedReader.Model
 
         [Required]
         [StringLength(100)]
-        public string Title
-        {
-            get { return title; }
-            set
-            {
-                if (value != title)
-                {
-                    title = value;
-                    NotifyPropertyChanged("Title");
-                }
-            }
-        }
+        public string Title { get; set; }
 
         [Required]
         [DataType(DataType.Url)]
-        public string Url
-        {
-            get { return url; }
-            set
-            {
-                if (value != url)
-                {
-                    url = value;
-                    NotifyPropertyChanged("Url");
-                }
-            }
-        }
+        public string Url { get; set; }
 
         public DateTime? LastUpdated { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public Feed()
         {
@@ -76,20 +49,11 @@ namespace FeedReader.Model
             Url = cache.Url;
             FeedItems = cache.FeedItems;
             cache = null;
-            NotifyPropertyChanged("");
         }
 
         public void EndEdit()
         {
             cache = null;
-        }
-
-        private void NotifyPropertyChanged(string info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
         }
 
         public override string ToString()

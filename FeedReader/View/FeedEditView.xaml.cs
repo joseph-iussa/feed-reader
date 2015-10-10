@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FeedReader.Model;
 
-namespace FeedReader
+namespace FeedReader.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FeedEditView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FeedEditView : UserControl
     {
-        public MainWindow()
+        public FeedEditView()
         {
             InitializeComponent();
         }
