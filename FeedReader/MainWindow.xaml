@@ -72,7 +72,7 @@
                   HeadersVisibility="Column" SelectionMode="Single"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Feed" Binding="{Binding FeedTitle}" Width="0.2*" />
+                <DataGridTextColumn Header="Feed" Binding="{Binding Feed.Title}" Width="0.2*" />
                 <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*" />
                 <DataGridTextColumn Header="Published" Binding="{Binding PublishDate}"
                                     SortDirection="Descending" Width="SizeToCells" />

@@ -14,27 +14,23 @@ using static FeedReader.Utils;
 
 namespace FeedReader.ViewModel
 {
-    class FeedViewModel : ViewModelBase, IEditableObject
+    class FeedViewModel : StaticFeedViewModel, IEditableObject
     {
         private DataRepository repo;
-        private Feed feed;
 
         public FeedViewModel(DataRepository repo, Feed feed,
                              RequestConfirmationDelegate RequestConfirmation = null,
                              ShowDialogDelegate ShowDialog = null,
                              ShowMessageDelegate ShowMessage = null)
-            : base(RequestConfirmation, ShowDialog, ShowMessage)
+            : base(feed, RequestConfirmation, ShowDialog, ShowMessage)
         {
             this.repo = repo;
-            this.feed = feed;
             ProcessFeedCommand = new RelayCommand(param => ProcessFeed(), param => true);
             SaveFeedCommand = new RelayCommand(param => SaveFeed(), param => true);
             DeleteFeedCommand = new RelayCommand(param => DeleteFeed());
         }
 
-        public int ID { get { return feed.ID; } }
-
-        public string Title
+        public new string Title
         {
             get { return feed.Title; }
             set
@@ -47,7 +43,7 @@ namespace FeedReader.ViewModel
             }
         }
 
-        public string Url
+        public new string Url
         {
             get { return feed.Url; }
             set

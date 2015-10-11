@@ -48,7 +48,7 @@ namespace FeedReader.ViewModel
         private bool FeedItemsViewFilter(object obj)
         {
             FeedItemViewModel feedItemVM = (FeedItemViewModel)obj;
-            return SelectedFeed == null ? true : feedItemVM.Feed.ID == SelectedFeed.ID;
+            return SelectedFeed == null ? true : feedItemVM.Feed == SelectedFeed;
         }
 
         // TODO: Remove these selected item props maybe?
@@ -112,7 +112,7 @@ namespace FeedReader.ViewModel
         {
             for (int i = 0; i < Feeds.Count; i++)
             {
-                if (Feeds[i].ID == e.ModifiedFeed.ID)
+                if (Feeds[i] == e.ModifiedFeed)
                 {
                     Feeds[i] = new FeedViewModel(repo, e.ModifiedFeed);
                     break;
@@ -122,14 +122,14 @@ namespace FeedReader.ViewModel
 
         private void HandleFeedDeleted(object sender, FeedDeletedEventArgs e)
         {
-            FeedViewModel toDelete = Feeds.Single(feedViewModel => feedViewModel.ID == e.DeletedFeed.ID);
+            FeedViewModel toDelete = Feeds.Single(feedViewModel => feedViewModel == e.DeletedFeed);
             Feeds.Remove(toDelete);
 
             // TODO: look into a better way to do this.
             for (int i = 0; i < FeedItems.Count; i++)
             {
                 FeedItemViewModel feedItemVM = FeedItems[i];
-                if (feedItemVM.Feed.ID == e.DeletedFeed.ID)
+                if (feedItemVM.Feed == e.DeletedFeed)
                 {
                     FeedItems[i] = null;
                 }

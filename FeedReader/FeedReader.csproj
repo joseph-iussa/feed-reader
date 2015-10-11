@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="EventArgs.cs" />
     <Compile Include="Repository\Repository.cs" />
+    <Compile Include="ViewModel\StaticFeedViewModel.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="ViewModel\FeedItemViewModel.cs" />
     <Compile Include="ViewModel\FeedViewModel.cs" />
