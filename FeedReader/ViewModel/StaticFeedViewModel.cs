@@ -19,7 +19,7 @@ namespace FeedReader.ViewModel
                                    ShowMessageDelegate ShowMessage = null)
             : base(RequestConfirmation, ShowDialog, ShowMessage)
         {
-            this.feed = feed;
+            this.feed = feed.ThrowIfNull();
         }
 
         public string Title { get { return feed.Title; } }
@@ -41,12 +41,12 @@ namespace FeedReader.ViewModel
 
         public bool Equals(StaticFeedViewModel other)
         {
-            return feed.ID == other.feed.ID;
+            return feed.ID == other.ThrowIfNull().feed.ID;
         }
 
         public bool Equals(Feed other)
         {
-            return feed.ID == other.ID;
+            return feed.ID == other.ThrowIfNull().ID;
         }
 
         public override int GetHashCode()

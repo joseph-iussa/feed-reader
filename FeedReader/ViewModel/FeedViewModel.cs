@@ -24,7 +24,7 @@ namespace FeedReader.ViewModel
                              ShowMessageDelegate ShowMessage = null)
             : base(feed, RequestConfirmation, ShowDialog, ShowMessage)
         {
-            this.repo = repo;
+            this.repo = repo.ThrowIfNull();
             ProcessFeedCommand = new RelayCommand(param => ProcessFeed(), param => true);
             SaveFeedCommand = new RelayCommand(param => SaveFeed(), param => true);
             DeleteFeedCommand = new RelayCommand(param => DeleteFeed());

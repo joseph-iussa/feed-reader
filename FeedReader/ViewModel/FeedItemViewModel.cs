@@ -10,15 +10,15 @@ namespace FeedReader.ViewModel
     class FeedItemViewModel : ViewModelBase
     {
         private readonly FeedItem feedItem;
-        private readonly StaticFeedViewModel feedViewModel;
+        private readonly StaticFeedViewModel feedItemsFeed;
 
         public FeedItemViewModel(FeedItem feedItem)
         {
-            this.feedItem = feedItem;
-            feedViewModel = new StaticFeedViewModel(this.feedItem.Feed);
+            this.feedItem = feedItem.ThrowIfNull();
+            feedItemsFeed = new StaticFeedViewModel(this.feedItem.Feed);
         }
 
-        public StaticFeedViewModel Feed { get { return feedViewModel; } }
+        public StaticFeedViewModel Feed { get { return feedItemsFeed; } }
         public string Title { get { return feedItem.Title; } }
         public DateTime? PublishDate { get { return feedItem.PublishDate; } }
         public string HtmlHeader { get { return feedItem.HtmlHeader; } }

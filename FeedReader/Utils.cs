@@ -35,5 +35,19 @@ namespace FeedReader
                 throw new FeedDataLoadException("Feed content is invalid", ex);
             }
         }
+
+        /// <summary>
+        /// If the (reference type) object this method acts on is null, throws an <see
+        /// cref="System.ArgumentNullException"/>. Otherwise, returns the object unchanged.
+        /// </summary>
+        public static T ThrowIfNull<T>(this T t) where T : class
+        {
+            if (t == null)
+            {
+                throw new ArgumentNullException(nameof(t));
+            }
+
+            return t;
+        }
     }
 }

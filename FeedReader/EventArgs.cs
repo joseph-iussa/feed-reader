@@ -11,7 +11,7 @@ namespace FeedReader
     {
         public FeedAddedEventArgs(Feed addedFeed)
         {
-            AddedFeed = addedFeed;
+            AddedFeed = addedFeed.ThrowIfNull();
         }
 
         public Feed AddedFeed { get; private set; }
@@ -21,7 +21,7 @@ namespace FeedReader
     {
         public FeedModifiedEventArgs(Feed modifiedFeed)
         {
-            ModifiedFeed = modifiedFeed;
+            ModifiedFeed = modifiedFeed.ThrowIfNull();
         }
 
         public Feed ModifiedFeed { get; private set; }
@@ -31,7 +31,7 @@ namespace FeedReader
     {
         public FeedDeletedEventArgs(Feed deletedFeed)
         {
-            DeletedFeed = deletedFeed;
+            DeletedFeed = deletedFeed.ThrowIfNull();
         }
 
         public Feed DeletedFeed { get; private set; }
@@ -41,7 +41,7 @@ namespace FeedReader
     {
         public FeedItemsAddedEventArgs(IEnumerable<FeedItem> addedFeedItems)
         {
-            AddedFeedItems = addedFeedItems;
+            AddedFeedItems = addedFeedItems.ThrowIfNull();
         }
 
         public IEnumerable<FeedItem> AddedFeedItems { get; private set; }
@@ -51,7 +51,7 @@ namespace FeedReader
     {
         public FeedItemsDeletedEventArgs(IEnumerable<FeedItem> deletedFeedItems)
         {
-            DeletedFeedItems = deletedFeedItems;
+            DeletedFeedItems = deletedFeedItems.ThrowIfNull();
         }
 
         public IEnumerable<FeedItem> DeletedFeedItems { get; private set; }

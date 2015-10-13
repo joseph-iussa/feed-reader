@@ -22,7 +22,7 @@ namespace FeedReader.ViewModel
         public MainWindowViewModel(DataRepository repo, ShowDialogDelegate showDialog = null)
             : base(ShowDialog: showDialog)
         {
-            this.repo = repo;
+            this.repo = repo.ThrowIfNull();
             Feeds = new ObservableCollection<FeedViewModel>(repo.AllFeeds());
             FeedItems = new ObservableCollection<FeedItemViewModel>(repo.AllFeedItems());
             FeedItemsView = CollectionViewSource.GetDefaultView(FeedItems);

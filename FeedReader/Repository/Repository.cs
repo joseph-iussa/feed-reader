@@ -16,7 +16,7 @@ namespace FeedReader.Repository
 
         public DataRepository(DB db)
         {
-            this.db = db;
+            this.db = db.ThrowIfNull();
             this.db.Database.Log = (string s) => System.Diagnostics.Trace.TraceInformation(s);
         }
 
@@ -43,6 +43,8 @@ namespace FeedReader.Repository
 
         public void AddFeed(Feed feed)
         {
+            feed.ThrowIfNull();
+
             db.Feeds.Add(feed);
             db.SaveChanges();
 
@@ -54,6 +56,8 @@ namespace FeedReader.Repository
 
         public void ModifyFeed(Feed feed)
         {
+            feed.ThrowIfNull();
+
             db.Entry(feed).State = EntityState.Modified;
             db.SaveChanges();
 
@@ -65,6 +69,8 @@ namespace FeedReader.Repository
 
         public void DeleteFeed(Feed feed)
         {
+            feed.ThrowIfNull();
+
             // Feed deletion handlers need relationships to FeedItem entities to be intact, so fire
             // event before db deletion.
             if (FeedDeleted != null)
@@ -78,6 +84,8 @@ namespace FeedReader.Repository
 
         public bool FeedExists(Feed feed)
         {
+            feed.ThrowIfNull();
+
             return db.Feeds.Any(f => f.ID == feed.ID);
         }
 

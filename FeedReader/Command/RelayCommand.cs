@@ -18,7 +18,7 @@ namespace FeedReader.Command
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            this.execute = execute;
+            this.execute = execute.ThrowIfNull();
             this.canExecute = canExecute;
         }
 
