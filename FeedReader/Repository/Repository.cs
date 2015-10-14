@@ -96,7 +96,16 @@ namespace FeedReader.Repository
 
         public void Dispose()
         {
-            db.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing && db != null)
+            {
+                db.Dispose();
+            }
         }
     }
 }
