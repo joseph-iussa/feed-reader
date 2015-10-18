@@ -23,8 +23,12 @@ namespace FeedReader.ViewModel
             : base(ShowDialog: showDialog)
         {
             this.repo = repo.ThrowIfNull();
-            Feeds = new ObservableCollection<FeedViewModel>(repo.AllFeeds());
-            FeedItems = new ObservableCollection<FeedItemViewModel>(repo.AllFeedItems());
+
+            Feeds = new ObservableCollection<FeedViewModel>(
+                repo.AllFeeds().Select(feed => new FeedViewModel(repo, feed)));
+            FeedItems = new ObservableCollection<FeedItemViewModel>(
+                repo.AllFeedItems().Select(feedItem => new FeedItemViewModel(feedItem)));
+
             FeedItemsView = CollectionViewSource.GetDefaultView(FeedItems);
             FeedItemsView.Filter = FeedItemsViewFilter;
             FeedItemsView.SortDescriptions.Add(new SortDescription("PublishDate",

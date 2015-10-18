@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FeedReader.Model;
-using FeedReader.ViewModel;
 
 namespace FeedReader.Repository
 {
@@ -30,15 +29,14 @@ namespace FeedReader.Repository
 
         public event EventHandler<FeedItemsDeletedEventArgs> FeedItemsDeleted;
 
-        public IEnumerable<FeedViewModel> AllFeeds()
+        public IEnumerable<Feed> AllFeeds()
         {
-            return db.Feeds.ToList().Select(feed => new FeedViewModel(this, feed));
+            return db.Feeds.ToList();
         }
 
-        public IEnumerable<FeedItemViewModel> AllFeedItems()
+        public IEnumerable<FeedItem> AllFeedItems()
         {
-            return db.FeedItems.Include("Feed").ToList()
-                     .Select(feedItem => new FeedItemViewModel(feedItem));
+            return db.FeedItems.Include("Feed").ToList();
         }
 
         public void AddFeed(Feed feed)
