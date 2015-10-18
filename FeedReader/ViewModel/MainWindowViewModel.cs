@@ -16,20 +16,24 @@ namespace FeedReader.ViewModel
     class MainWindowViewModel : ViewModelBase
     {
         private DataRepository repo;
-        private FeedViewModel selectedFeed;
-        private FeedItemViewModel selectedFeedItem;
+
+        private ObservableCollection<FeedViewModel> feeds;
+        private ObservableCollection<FeedItemViewModel> feedItems;
 
         public MainWindowViewModel(DataRepository repo, ShowDialogDelegate showDialog = null)
             : base(ShowDialog: showDialog)
         {
             this.repo = repo.ThrowIfNull();
 
-            Feeds = new ObservableCollection<FeedViewModel>(
+            feeds = new ObservableCollection<FeedViewModel>(
                 repo.AllFeeds().Select(feed => new FeedViewModel(repo, feed)));
-            FeedItems = new ObservableCollection<FeedItemViewModel>(
+            feedItems = new ObservableCollection<FeedItemViewModel>(
                 repo.AllFeedItems().Select(feedItem => new FeedItemViewModel(feedItem)));
 
-            FeedItemsView = CollectionViewSource.GetDefaultView(FeedItems);
+            FeedsView = CollectionViewSource.GetDefaultView(feeds);
+            FeedsView.CurrentChanged += HandleFeedsViewCurrentChanged;
+
+            FeedItemsView = CollectionViewSource.GetDefaultView(feedItems);
             FeedItemsView.Filter = FeedItemsViewFilter;
             FeedItemsView.SortDescriptions.Add(new SortDescription("PublishDate",
                                                                    ListSortDirection.Descending));
@@ -42,39 +46,25 @@ namespace FeedReader.ViewModel
             repo.FeedModified += HandleFeedModified;
             repo.FeedDeleted += HandleFeedDeleted;
             repo.FeedItemsAdded += HandleFeedItemsAdded;
+
+            FeedsView.MoveCurrentTo(null);
         }
 
-        public ObservableCollection<FeedViewModel> Feeds { get; private set; }
-        public ObservableCollection<FeedItemViewModel> FeedItems { get; private set; }
-
+        public ICollectionView FeedsView { get; private set; }
         public ICollectionView FeedItemsView { get; private set; }
+
+        private void HandleFeedsViewCurrentChanged(object sender, EventArgs e)
+        {
+            FeedItemsView.Refresh();
+        }
 
         private bool FeedItemsViewFilter(object obj)
         {
-            FeedItemViewModel feedItemVM = (FeedItemViewModel)obj;
-            return SelectedFeed == null ? true : feedItemVM.Feed == SelectedFeed;
-        }
+            if (obj == null) return false;
 
-        // TODO: Remove these selected item props maybe?
-        public FeedViewModel SelectedFeed
-        {
-            get { return selectedFeed; }
-            set
-            {
-                selectedFeed = value;
-                NotifyPropertyChanged(nameof(SelectedFeed));
-                FeedItemsView.Refresh();
-            }
-        }
-
-        public FeedItemViewModel SelectedFeedItem
-        {
-            get { return selectedFeedItem; }
-            set
-            {
-                selectedFeedItem = value;
-                NotifyPropertyChanged(nameof(SelectedFeedItem));
-            }
+            FeedItemViewModel feedItem = (FeedItemViewModel)obj;
+            FeedViewModel selectedFeed = (FeedViewModel)FeedsView.CurrentItem;
+            return selectedFeed == null ? true : feedItem.Feed == selectedFeed;
         }
 
         public ICommand NewFeedCommand { get; private set; }
@@ -88,37 +78,37 @@ namespace FeedReader.ViewModel
 
         private void ModifyFeed()
         {
-            SelectedFeed.BeginEdit();
-            bool? success = ShowDialog("Edit Feed", SelectedFeed);
+            FeedViewModel feedBeingModified = ((FeedViewModel)FeedsView.CurrentItem);
+            feedBeingModified.BeginEdit();
+            bool? success = ShowDialog("Edit Feed", feedBeingModified);
             if (!success.GetValueOrDefault(false))
             {
-                SelectedFeed.CancelEdit();
+                feedBeingModified.CancelEdit();
             }
         }
 
         private void ClearFeedItemsFilter()
         {
-            SelectedFeed = null;
+            FeedsView.MoveCurrentTo(null);
         }
 
-        // TODO: look into using defered refresh here and below.
         private void HandleFeedAdded(object sender, FeedAddedEventArgs e)
         {
-            Feeds.Add(new FeedViewModel(repo, e.AddedFeed));
+            feeds.Add(new FeedViewModel(repo, e.AddedFeed));
 
             foreach (FeedItem feedItem in e.AddedFeed.FeedItems)
             {
-                FeedItems.Add(new FeedItemViewModel(feedItem));
+                feedItems.Add(new FeedItemViewModel(feedItem));
             }
         }
 
         private void HandleFeedModified(object sender, FeedModifiedEventArgs e)
         {
-            for (int i = 0; i < Feeds.Count; i++)
+            for (int i = 0; i < feeds.Count; i++)
             {
-                if (Feeds[i] == e.ModifiedFeed)
+                if (feeds[i] == e.ModifiedFeed)
                 {
-                    Feeds[i] = new FeedViewModel(repo, e.ModifiedFeed);
+                    feeds[i] = new FeedViewModel(repo, e.ModifiedFeed);
                     break;
                 }
             }
@@ -126,27 +116,27 @@ namespace FeedReader.ViewModel
 
         private void HandleFeedDeleted(object sender, FeedDeletedEventArgs e)
         {
-            FeedViewModel toDelete = Feeds.Single(feedViewModel => feedViewModel == e.DeletedFeed);
-            Feeds.Remove(toDelete);
+            FeedViewModel toDelete = feeds.Single(feedViewModel => feedViewModel == e.DeletedFeed);
+            feeds.Remove(toDelete);
 
             // TODO: look into a better way to do this.
-            for (int i = 0; i < FeedItems.Count; i++)
+            for (int i = 0; i < feedItems.Count; i++)
             {
-                FeedItemViewModel feedItemVM = FeedItems[i];
+                FeedItemViewModel feedItemVM = feedItems[i];
                 if (feedItemVM.Feed == e.DeletedFeed)
                 {
-                    FeedItems[i] = null;
+                    feedItems[i] = null;
                 }
             }
 
-            FeedItemViewModel[] temp = FeedItems.ToArray();
-            FeedItems.Clear();
+            FeedItemViewModel[] temp = feedItems.ToArray();
+            feedItems.Clear();
 
             foreach (FeedItemViewModel feedItemVM in temp)
             {
                 if (feedItemVM != null)
                 {
-                    FeedItems.Add(feedItemVM);
+                    feedItems.Add(feedItemVM);
                 }
             }
         }
@@ -155,7 +145,7 @@ namespace FeedReader.ViewModel
         {
             foreach (FeedItem addedFeedItem in e.AddedFeedItems)
             {
-                FeedItems.Add(new FeedItemViewModel(addedFeedItem));
+                feedItems.Add(new FeedItemViewModel(addedFeedItem));
             }
         }
     }

@@ -42,14 +42,14 @@
                 </ListView>
                 <ListView x:Name="feedList"
                           DisplayMemberPath="Title" SelectionMode="Single"
-                          ItemsSource="{Binding Feeds}" SelectedItem="{Binding Path=SelectedFeed}"
+                          ItemsSource="{Binding FeedsView}" IsSynchronizedWithCurrentItem="True"
                           BorderThickness="0">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="feedEditContextMenuItem"
                                       Header="Edit..." Command="{Binding ModifyFeedCommand}" />
                             <MenuItem Header="Delete..."
-                                      Command="{Binding Path=SelectedFeed.DeleteFeedCommand}" />
+                                      Command="{Binding FeedsView.CurrentItem.DeleteFeedCommand}" />
                         </ContextMenu>
                     </ListView.ContextMenu>
                     <i:Interaction.Triggers>
@@ -68,7 +68,7 @@
         </Border>
 
         <DataGrid x:Name="feedItemList" Grid.Column="1" AutoGenerateColumns="False"
-                  ItemsSource="{Binding FeedItemsView}" SelectedItem="{Binding SelectedFeedItem}"
+                  ItemsSource="{Binding FeedItemsView}" IsSynchronizedWithCurrentItem="True"
                   HeadersVisibility="Column" SelectionMode="Single"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
             <DataGrid.Columns>
@@ -79,7 +79,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid x:Name="feedItemDisplay" Grid.Column="2" DataContext="{Binding SelectedFeedItem}">
+        <Grid x:Name="feedItemDisplay" Grid.Column="2" DataContext="{Binding FeedItemsView.CurrentItem}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.2*" />
                 <RowDefinition />
