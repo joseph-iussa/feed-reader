@@ -102,7 +102,7 @@ namespace FeedReader.Model
 
     public class DB : DbContext
     {
-        public DbSet<Feed> Feeds { get; set; }
-        public DbSet<FeedItem> FeedItems { get; set; }
+        public virtual DbSet<Feed> Feeds { get; set; }
+        public virtual DbSet<FeedItem> FeedItems { get; set; }
     }
 }
