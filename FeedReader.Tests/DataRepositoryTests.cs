@@ -39,6 +39,7 @@ namespace FeedReader.Tests
             mockContext.Setup(m => m.Feeds).Returns(mockFeedSet.Object);
             mockContext.Setup(m => m.FeedItems).Returns(mockFeedItemSet.Object);
 
+            mockFeedSet.Setup(m => m.Add(It.IsAny<Feed>())).Callback((Feed f) => allFeeds.Add(f));
             mockFeedSet.Setup(m => m.Remove(It.IsAny<Feed>())).Callback((Feed f) => allFeeds.Remove(f));
 
             allFeeds = new List<Feed>() {
@@ -66,7 +67,6 @@ namespace FeedReader.Tests
             mockFeedItemSet.As<IQueryable<FeedItem>>().Setup(m => m.GetEnumerator()).Returns(qAllFeedItems.GetEnumerator());
 
             // Do nothing for call to Include.
-            // TODO: Do something for call to Include?
             mockFeedItemSet.Setup(m => m.Include(It.IsAny<string>())).Returns(mockFeedItemSet.Object);
 
             allFeedsPersisted = new List<Feed>(
@@ -134,22 +134,13 @@ namespace FeedReader.Tests
             repoUnderTest.AddFeed(null);
         }
 
-        // TODO: change this.
         [Test]
         public void AddFeed_AddsAndSavesFeedViaContext()
         {
-            // Ensure calls are made in correct order.
-            int callOrder = 0;
-            string errMsg = "SaveChanges called but Add(feed) has not been called yet.";
-            mockFeedSet.Setup(m => m.Add(singleFeed))
-                       .Callback(() => Assert.That(callOrder++, Is.EqualTo(0), errMsg));
-            mockContext.Setup(m => m.SaveChanges())
-                       .Callback(() => Assert.That(callOrder, Is.EqualTo(1), errMsg));
-
             repoUnderTest.AddFeed(singleFeed);
 
-            mockFeedSet.Verify(m => m.Add(singleFeed), Times.Once);
-            mockContext.Verify(m => m.SaveChanges(), Times.Once);
+            Assert.IsTrue(allFeedsPersisted.Contains(singleFeed, feedEqualityComparer),
+                          "Feed not added via context.");
         }
 
         [Test]
