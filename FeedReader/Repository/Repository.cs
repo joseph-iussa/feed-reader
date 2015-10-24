@@ -11,12 +11,12 @@ namespace FeedReader.Repository
 {
     class DataRepository : IDisposable
     {
-        private DB db;
+        private IDB db;
 
-        public DataRepository(DB db)
+        public DataRepository(IDB db)
         {
             this.db = db.ThrowIfNull();
-            this.db.Database.Log = (string s) => System.Diagnostics.Trace.TraceInformation(s);
+            this.db.InternalContext.Database.Log = (string s) => System.Diagnostics.Trace.TraceInformation(s);
         }
 
         public event EventHandler<FeedAddedEventArgs> FeedAdded;
@@ -55,8 +55,8 @@ namespace FeedReader.Repository
         public void ModifyFeed(Feed feed)
         {
             feed.ThrowIfNull();
+            if (db.GetEntityState(feed) != EntityState.Modified) return;
 
-            db.Entry(feed).State = EntityState.Modified;
             db.SaveChanges();
 
             if (FeedModified != null)

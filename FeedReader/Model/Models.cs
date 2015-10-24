@@ -100,9 +100,28 @@ namespace FeedReader.Model
         }
     }
 
-    public class DB : DbContext
+    public interface IDB : IDisposable
     {
-        public virtual DbSet<Feed> Feeds { get; set; }
-        public virtual DbSet<FeedItem> FeedItems { get; set; }
+        DB InternalContext { get; }
+
+        DbSet<Feed> Feeds { get; set; }
+        DbSet<FeedItem> FeedItems { get; set; }
+
+        EntityState GetEntityState(object obj);
+
+        int SaveChanges();
+    }
+
+    public class DB : DbContext, IDB
+    {
+        public DB InternalContext { get { return this; } }
+
+        public DbSet<Feed> Feeds { get; set; }
+        public DbSet<FeedItem> FeedItems { get; set; }
+
+        public EntityState GetEntityState(object obj)
+        {
+            return Entry(obj).State;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace FeedReader.Tests
 
         private DataRepository repoUnderTest;
 
-        private Mock<DB> mockContext;
+        private Mock<IDB> mockContext;
         private Mock<DbSet<Feed>> mockFeedSet;
         private Mock<DbSet<FeedItem>> mockFeedItemSet;
 
@@ -32,10 +33,11 @@ namespace FeedReader.Tests
         [SetUp]
         public void SetUp()
         {
-            mockContext = new Mock<DB>();
+            mockContext = new Mock<IDB>();
             mockFeedSet = new Mock<DbSet<Feed>>();
             mockFeedItemSet = new Mock<DbSet<FeedItem>>();
 
+            mockContext.Setup(m => m.InternalContext).Returns(new Mock<DB>().Object);
             mockContext.Setup(m => m.Feeds).Returns(mockFeedSet.Object);
             mockContext.Setup(m => m.FeedItems).Returns(mockFeedItemSet.Object);
 
@@ -168,10 +170,11 @@ namespace FeedReader.Tests
             repoUnderTest.ModifyFeed(null);
         }
 
-        // TODO: Mock context Entry member.
         [Test]
         public void ModifyFeed_ModifiesAndSavesChangesToFeedViaContext()
         {
+            mockContext.Setup(m => m.GetEntityState(It.IsAny<Feed>())).Returns(EntityState.Modified);
+
             int feedToModifyId = 1;
             Feed feedToModify = allFeeds.Single(f => f.ID == feedToModifyId);
 
@@ -186,6 +189,8 @@ namespace FeedReader.Tests
         [Test]
         public void ModifyFeed_RaisesFeedModifiedEvent()
         {
+            mockContext.Setup(m => m.GetEntityState(It.IsAny<Feed>())).Returns(EntityState.Modified);
+
             bool eventRaised = false;
             Feed eventArgFeed = null;
 
