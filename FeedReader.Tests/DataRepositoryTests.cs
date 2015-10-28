@@ -91,10 +91,29 @@ namespace FeedReader.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Constructor_ThrowsOnNullInput()
         {
-            new DataRepository(null);
+            Assert.Throws<ArgumentNullException>(() => new DataRepository(null));
+        }
+
+        [TestCase("AddFeed")]
+        [TestCase("ModifyFeed")]
+        [TestCase("DeleteFeed")]
+        [TestCase("FeedExists")]
+        public void Various_ThrowsOnNullInput(string methodName)
+        {
+            var mi = typeof(DataRepository).GetMethod(methodName);
+            try
+            {
+                mi.Invoke(repoUnderTest, new object[] { null });
+            }
+            catch (System.Reflection.TargetInvocationException ex)
+            {
+                Assert.IsInstanceOf<ArgumentNullException>(ex.InnerException);
+                return;
+            }
+
+            Assert.Fail($"{methodName} did not throw on null input.");
         }
 
         [Test]
@@ -130,13 +149,6 @@ namespace FeedReader.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AddFeed_ThrowsOnNullInput()
-        {
-            repoUnderTest.AddFeed(null);
-        }
-
-        [Test]
         public void AddFeed_AddsAndSavesFeedViaContext()
         {
             repoUnderTest.AddFeed(singleFeed);
@@ -161,13 +173,6 @@ namespace FeedReader.Tests
 
             Assert.IsTrue(eventRaised, "FeedAdded event not raised.");
             Assert.AreEqual(singleFeed, eventArgFeed, "Wrong Feed attached to FeedAdded event.");
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ModifyFeed_ThrowsOnNullInput()
-        {
-            repoUnderTest.ModifyFeed(null);
         }
 
         [Test]
@@ -207,13 +212,6 @@ namespace FeedReader.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteFeed_ThrowsOnNullInput()
-        {
-            repoUnderTest.DeleteFeed(null);
-        }
-
-        [Test]
         public void DeleteFeed_DeletesFeedViaContext()
         {
             Feed feedToDelete = allFeeds.First();
@@ -240,13 +238,6 @@ namespace FeedReader.Tests
 
             Assert.IsTrue(eventRaised, "FeedDeleted event not raised.");
             Assert.AreEqual(singleFeed, eventArgFeed, "Wrong Feed attached to FeedDeleted event.");
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FeedExists_ThrowsOnNullInput()
-        {
-            repoUnderTest.FeedExists(null);
         }
 
         [Test]
