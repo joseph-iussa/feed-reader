@@ -102,8 +102,6 @@ namespace FeedReader.Model
 
     public interface IDB : IDisposable
     {
-        DB InternalContext { get; }
-
         DbSet<Feed> Feeds { get; set; }
         DbSet<FeedItem> FeedItems { get; set; }
 
@@ -114,7 +112,12 @@ namespace FeedReader.Model
 
     public class DB : DbContext, IDB
     {
-        public DB InternalContext { get { return this; } }
+        public DB()
+        {
+#if DEBUG
+            Database.Log = (string s) => System.Diagnostics.Trace.TraceInformation(s);
+#endif
+        }
 
         public DbSet<Feed> Feeds { get; set; }
         public DbSet<FeedItem> FeedItems { get; set; }

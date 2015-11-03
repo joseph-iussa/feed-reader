@@ -37,7 +37,6 @@ namespace FeedReader.Tests
             mockFeedSet = new Mock<DbSet<Feed>>();
             mockFeedItemSet = new Mock<DbSet<FeedItem>>();
 
-            mockContext.Setup(m => m.InternalContext).Returns(new Mock<DB>().Object);
             mockContext.Setup(m => m.Feeds).Returns(mockFeedSet.Object);
             mockContext.Setup(m => m.FeedItems).Returns(mockFeedItemSet.Object);
 

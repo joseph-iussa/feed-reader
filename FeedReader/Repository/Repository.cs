@@ -16,7 +16,6 @@ namespace FeedReader.Repository
         public DataRepository(IDB db)
         {
             this.db = db.ThrowIfNull();
-            this.db.InternalContext.Database.Log = (string s) => System.Diagnostics.Trace.TraceInformation(s);
         }
 
         public event EventHandler<FeedAddedEventArgs> FeedAdded;
