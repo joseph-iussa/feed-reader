@@ -6,4 +6,4 @@ This is a personal project for me to exercise my .NET and C# knowledge, and to l
 
 The app is structured using the MVVM architecture.
 
-I've recently begun adding unit tests. So far I've added tests for the data access layer of the app.
+I'm currently in the process of adding tests, both integration and unit. I've written integration tests for direct database interactions and am in the process of writing unit tests for the rest of the application.

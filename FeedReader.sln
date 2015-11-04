@@ -5,13 +5,15 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedReader", "FeedReader\FeedReader.csproj", "{4585DD5A-6CE1-4126-B2D7-D2D9F30E5193}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedReader.Tests", "FeedReader.Tests\FeedReader.Tests.csproj", "{6B59B07A-7672-488A-B045-EF1C6418BDB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedReader.UnitTests", "FeedReader.UnitTests\FeedReader.UnitTests.csproj", "{6B59B07A-7672-488A-B045-EF1C6418BDB7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BCB9488D-3467-4054-B7CA-475ED270A82F}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedReader.IntegrationTests", "FeedReader.IntegrationTests\FeedReader.IntegrationTests.csproj", "{3E28A1F6-41CC-4824-8849-24F0341FD4FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{6B59B07A-7672-488A-B045-EF1C6418BDB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B59B07A-7672-488A-B045-EF1C6418BDB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B59B07A-7672-488A-B045-EF1C6418BDB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E28A1F6-41CC-4824-8849-24F0341FD4FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E28A1F6-41CC-4824-8849-24F0341FD4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E28A1F6-41CC-4824-8849-24F0341FD4FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E28A1F6-41CC-4824-8849-24F0341FD4FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
