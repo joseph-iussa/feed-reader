@@ -20,8 +20,7 @@ namespace FeedReader.ViewModel
         private ObservableCollection<FeedViewModel> feeds;
         private ObservableCollection<FeedItemViewModel> feedItems;
 
-        public MainWindowViewModel(DataRepository repo, ShowDialogDelegate showDialog = null)
-            : base(ShowDialog: showDialog)
+        public MainWindowViewModel(DataRepository repo)
         {
             this.repo = repo.ThrowIfNull();
 
@@ -73,14 +72,14 @@ namespace FeedReader.ViewModel
 
         private void NewFeed()
         {
-            bool? success = ShowDialog("New Feed", new FeedViewModel(repo, new Feed()));
+            bool? success = InteractionService.ShowDialog("New Feed", new FeedViewModel(repo, new Feed()));
         }
 
         private void ModifyFeed()
         {
             FeedViewModel feedBeingModified = ((FeedViewModel)FeedsView.CurrentItem);
             feedBeingModified.BeginEdit();
-            bool? success = ShowDialog("Edit Feed", feedBeingModified);
+            bool? success = InteractionService.ShowDialog("Edit Feed", feedBeingModified);
             if (!success.GetValueOrDefault(false))
             {
                 feedBeingModified.CancelEdit();

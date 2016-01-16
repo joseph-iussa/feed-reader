@@ -18,11 +18,7 @@ namespace FeedReader.ViewModel
     {
         private DataRepository repo;
 
-        public FeedViewModel(DataRepository repo, Feed feed,
-                             RequestConfirmationDelegate RequestConfirmation = null,
-                             ShowDialogDelegate ShowDialog = null,
-                             ShowMessageDelegate ShowMessage = null)
-            : base(feed, RequestConfirmation, ShowDialog, ShowMessage)
+        public FeedViewModel(DataRepository repo, Feed feed) : base(feed)
         {
             this.repo = repo.ThrowIfNull();
             ProcessFeedCommand = new RelayCommand(param => ProcessFeed(), param => true);
@@ -85,7 +81,7 @@ namespace FeedReader.ViewModel
             }
             catch (FeedDataLoadException ex)
             {
-                ShowMessage(ex.Message);
+                InteractionService.ShowMessage(ex.Message);
                 return;
             }
 
@@ -120,7 +116,7 @@ namespace FeedReader.ViewModel
 
         private void DeleteFeed()
         {
-            if (RequestConfirmation($"Really Delete feed {feed.Title}?", "Delete Feed"))
+            if (InteractionService.RequestConfirmation($"Really Delete feed {feed.Title}?", "Delete Feed"))
             {
                 repo.DeleteFeed(feed);
             }

@@ -86,6 +86,7 @@
     </ApplicationDefinition>
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="Interaction\InteractionService.cs" />
     <Compile Include="Migrations\201509211614172_AddFeedItem.cs" />
     <Compile Include="Migrations\201509211614172_AddFeedItem.Designer.cs">
       <DependentUpon>201509211614172_AddFeedItem.cs</DependentUpon>

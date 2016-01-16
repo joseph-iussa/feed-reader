@@ -13,11 +13,7 @@ namespace FeedReader.ViewModel
     {
         protected readonly Feed feed;
 
-        public StaticFeedViewModel(Feed feed,
-                                   RequestConfirmationDelegate RequestConfirmation = null,
-                                   ShowDialogDelegate ShowDialog = null,
-                                   ShowMessageDelegate ShowMessage = null)
-            : base(RequestConfirmation, ShowDialog, ShowMessage)
+        public StaticFeedViewModel(Feed feed)
         {
             this.feed = feed.ThrowIfNull();
         }
